@@ -1,0 +1,37 @@
+name: RAPTOR Chart Two Fetch
+
+on:
+  schedule:
+    - cron: '0 8 * * 1-5'
+    - cron: '0 14 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  fetch-chart-two:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Installa dipendenze
+        run: pip install yfinance
+
+      - name: Esegui RAPTOR Chart Two Fetch
+        run: python raptor_chart_two_fetch.py
+
+      - name: Commit e push raptor_chart_two.json
+        run: |
+          git config user.name  "RAPTOR Bot"
+          git config user.email "raptor-bot@noreply.github.com"
+          git add raptor_chart_two.json
+          git diff --staged --quiet || git commit -m "📊 Chart two $(date +'%d/%m/%Y %H:%M')"
+          git pull --rebase origin main
+          git push
