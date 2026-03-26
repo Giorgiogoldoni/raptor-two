@@ -6,341 +6,276 @@
 <title>🦅 RAPTOR Two</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-:root{--bg:#f5f7fa;--bg2:#fff;--bg3:#eef0f3;--border:#d0d7de;--text:#1f2328;--text2:#57606a;--green:#1a7f37;--red:#cf222e;--blue:#0969da}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,sans-serif;font-size:13px;min-height:100vh}
-
-/* HEADER */
-#hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:8px 16px;
-  display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;z-index:100}
-.logo{font-size:17px;font-weight:700;letter-spacing:1px;
-  background:linear-gradient(135deg,#1f2328,#2563eb);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sub{font-size:10px;color:var(--text2)}
+body{background:#f5f7fa;color:#1f2328;font-family:"Segoe UI",system-ui,sans-serif;font-size:13px}
+#hdr{background:#fff;border-bottom:1px solid #d0d7de;padding:8px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;z-index:100}
+.logo{font-size:17px;font-weight:700}
 .spacer{flex:1}
-.hbadge{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:3px 9px;font-size:11px;color:var(--text2)}
-.hbadge b{color:var(--text)}
-.hbtn{padding:5px 13px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;border:1px solid}
-.hbtn-blue{background:#1d4ed8;border-color:#1d4ed8;color:#fff}
-.hbtn-blue:hover{background:#2563eb}
-.hbtn-grey{background:var(--bg3);border-color:var(--border);color:var(--text)}
-.hbtn-grey:hover{border-color:var(--blue);color:var(--blue)}
-.hbtn-back{background:var(--bg3);border-color:var(--border);color:var(--text2);text-decoration:none;padding:5px 13px;border-radius:6px;font-size:11px;border:1px solid}
-
-/* VIX */
-#vixBadge{display:flex;align-items:center;gap:8px;border-radius:8px;padding:4px 12px;border:2px solid var(--border);font-size:11px;font-weight:700;white-space:nowrap}
-#vixBadge .vlbl{font-size:8px;font-weight:400;opacity:.75;display:block}
-#vixBadge.calma{background:#dafbe1;border-color:#1a7f37;color:#1a7f37}
-#vixBadge.normale{background:#fff8c5;border-color:#7d4e00;color:#7d4e00}
-#vixBadge.attenzione{background:#fff1e5;border-color:#bc4c00;color:#bc4c00}
-#vixBadge.stress{background:#ffebe9;border-color:#cf222e;color:#cf222e}
-#vixBadge.paura{background:#ffebe9;border-color:#a40000;color:#a40000}
-
-/* TS BAR */
-#tsBar{background:#fff8c5;border-bottom:1px solid #d4a017;padding:4px 16px;font-size:11px;color:#7d4e00}
-#tsBar.fresh{background:#dafbe1;border-color:#1a7f37;color:#1a7f37}
-#tsBar.stale{background:#ffebe9;border-color:#cf222e;color:#cf222e}
-
-/* TIPO TABS */
-#tipoBar{background:var(--bg2);border-bottom:1px solid var(--border);padding:6px 16px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.tipo-btn{padding:4px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;border:2px solid;transition:all .15s}
-.tipo-ALL{background:var(--bg3);border-color:var(--border);color:var(--text2)}
-.tipo-ALL.act{background:#1f2328;border-color:#1f2328;color:#fff}
-.tipo-ULTRA{background:#f0f9ff;border-color:#0369a1;color:#0369a1}
-.tipo-ULTRA.act{background:#0369a1;border-color:#0369a1;color:#fff}
-.tipo-SETTORIALI{background:#f0fdf4;border-color:#16a34a;color:#16a34a}
-.tipo-SETTORIALI.act{background:#16a34a;border-color:#16a34a;color:#fff}
-.tipo-TEMATICI{background:#faf5ff;border-color:#7c3aed;color:#7c3aed}
-.tipo-TEMATICI.act{background:#7c3aed;border-color:#7c3aed;color:#fff}
-.tipo-COMMODITIES{background:#fff7ed;border-color:#c2410c;color:#c2410c}
-.tipo-COMMODITIES.act{background:#c2410c;border-color:#c2410c;color:#fff}
-
-/* FILTER BARS */
-.fbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:5px 16px;display:flex;gap:5px;flex-wrap:wrap;align-items:center}
-.flbl{font-size:10px;color:var(--text2);font-weight:600;margin-right:4px}
-.fbtn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:11px;font-weight:600}
-.fbtn:hover{border-color:var(--blue);color:var(--blue)}
-.fbtn.fact{background:#dbeafe;border-color:var(--blue);color:var(--blue)}
-.fbtn.sact-LONG_CONF{background:#dafbe1;border-color:var(--green);color:var(--green)}
-.fbtn.sact-LONG_EARLY{background:#ddf4ff;border-color:var(--blue);color:var(--blue)}
-.fbtn.sact-GRIGIA{background:#fff8c5;border-color:#7d4e00;color:#7d4e00}
-.fbtn.sact-USCITA{background:#ffebe9;border-color:var(--red);color:var(--red)}
-.fbtn.sact-STOP{background:#ffebe9;border-color:#a40000;color:#a40000}
-.fbtn.sact-ALL{background:#dbeafe;border-color:var(--blue);color:var(--blue)}
-
-/* TABLE */
+.badge{background:#eef0f3;border:1px solid #d0d7de;border-radius:10px;padding:3px 9px;font-size:11px;color:#57606a}
+.badge b{color:#1f2328}
+.btn{padding:5px 13px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;border:1px solid}
+.btn-blue{background:#1d4ed8;border-color:#1d4ed8;color:#fff}
+.btn-grey{background:#eef0f3;border-color:#d0d7de;color:#1f2328}
+#vixBox{padding:4px 12px;border-radius:8px;border:2px solid #d0d7de;font-size:11px;font-weight:700}
+#tsBar{padding:4px 16px;font-size:11px;background:#fff8c5;border-bottom:1px solid #d4a017;color:#7d4e00}
+#tipoBar,#sigBar{background:#fff;border-bottom:1px solid #d0d7de;padding:5px 16px;display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.lbl{font-size:10px;color:#57606a;font-weight:600;margin-right:4px}
+.tb{padding:3px 12px;border-radius:12px;cursor:pointer;font-size:12px;font-weight:700;border:2px solid #d0d7de;background:#eef0f3;color:#57606a}
+.tb.act,.tb:hover{border-color:#1d4ed8;background:#dbeafe;color:#1d4ed8}
+.sb{padding:3px 10px;border-radius:12px;cursor:pointer;font-size:11px;font-weight:600;border:1px solid #d0d7de;background:#eef0f3;color:#57606a}
+.sb.act,.sb:hover{border-color:#1d4ed8;background:#dbeafe;color:#1d4ed8}
 #tblWrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:1100px}
-thead tr{background:var(--bg2);position:sticky;top:0;z-index:9}
-th{padding:7px 6px;text-align:left;font-size:10px;color:var(--text2);border-bottom:2px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
-th:hover{color:var(--text)}
-th.asc::after{content:" ▲";font-size:9px}
-th.desc::after{content:" ▼";font-size:9px}
-td{padding:5px 6px;border-bottom:1px solid #eaecef;vertical-align:middle;white-space:nowrap}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th{padding:7px 6px;text-align:left;font-size:10px;color:#57606a;border-bottom:2px solid #d0d7de;white-space:nowrap;cursor:pointer;background:#fff;position:sticky;top:0}
+th:hover{color:#1f2328}
+td{padding:5px 6px;border-bottom:1px solid #eaecef;white-space:nowrap;vertical-align:middle}
 tr:hover td{background:#f0f9ff}
-
-/* TIPO badge in tabella */
-.tb-ULTRA{background:#dbeafe;color:#1d4ed8;font-size:9px;padding:1px 6px;border-radius:4px;font-weight:700}
-.tb-SETTORIALI{background:#dcfce7;color:#16a34a;font-size:9px;padding:1px 6px;border-radius:4px;font-weight:700}
-.tb-TEMATICI{background:#f3e8ff;color:#7c3aed;font-size:9px;padding:1px 6px;border-radius:4px;font-weight:700}
-.tb-COMMODITIES{background:#ffedd5;color:#c2410c;font-size:9px;padding:1px 6px;border-radius:4px;font-weight:700}
-
-/* ZONA */
-.zona{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700}
+.z{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700}
 .z-LC{background:#dafbe1;color:#1a7f37;border:1px solid #1a7f37}
 .z-LE{background:#ddf4ff;color:#0969da;border:1px solid #0969da}
 .z-G{background:#fff8c5;color:#7d4e00;border:1px solid #d4a017}
 .z-U{background:#ffebe9;color:#cf222e;border:1px solid #cf222e}
 .z-S{background:#ffebe9;color:#a40000;border:1px solid #a40000}
-.z-N{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
-
-/* KAMA / SAR */
-.kd{display:flex;flex-direction:column;gap:1px;font-size:10px;line-height:1.3}
-.kf{color:#dc2626;font-weight:700}
-.ks{color:#7c3aed}
-.pos{color:var(--green)}.neg{color:var(--red)}
-.vh{color:#1a7f37;font-weight:700}.vl{color:#cf222e}
-
-/* CHART BTN */
-.btn-chart{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:2px 8px;border-radius:5px;cursor:pointer;font-size:11px}
-.btn-chart:hover{border-color:var(--blue);color:var(--blue)}
-
-#empty{padding:60px;text-align:center;color:var(--text2);font-size:16px}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.z-N{background:#eef0f3;color:#57606a;border:1px solid #d0d7de}
+.pos{color:#1a7f37}.neg{color:#cf222e}
+.chart-btn{background:#eef0f3;border:1px solid #d0d7de;color:#57606a;padding:2px 8px;border-radius:5px;cursor:pointer;font-size:11px}
+.chart-btn:hover{border-color:#1d4ed8;color:#1d4ed8}
+#empty{padding:60px;text-align:center;color:#57606a;font-size:16px}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div id="hdr">
   <div>
     <div class="logo">🦅 RAPTOR TWO</div>
-    <div class="sub">Ultra · Settoriali · Tematici · Commodities · Doppia KAMA · SAR · VIX Regime</div>
+    <div style="font-size:10px;color:#57606a">Ultra · Settoriali · Tematici · Commodities</div>
   </div>
   <div class="spacer"></div>
-  <div class="hbadge">Tot: <b id="hTot">—</b></div>
-  <div class="hbadge">🟢 <b id="hLC">—</b> | 🔵 <b id="hLE">—</b></div>
-  <div class="hbadge">🔴 <b id="hU">—</b> | ⛔ <b id="hS">—</b></div>
-  <div id="vixBadge" class="normale">
-    <div><span class="vlbl">VIX / VSTOXX</span><span id="vixVal">— / —</span></div>
-    <div id="regimeLbl">—</div>
-  </div>
-  <button class="hbtn hbtn-blue" onclick="loadJSON()">🔄 Aggiorna</button>
-  <button class="hbtn hbtn-grey" onclick="exportExcel()">📥 Excel</button>
-  <a class="hbtn-back" href="https://giorgiogoldoni.github.io/fixed/">← RAPTOR Suite</a>
+  <div class="badge">Tot: <b id="hTot">—</b></div>
+  <div class="badge">🟢 <b id="hLC">—</b> | 🔵 <b id="hLE">—</b> | 🔴 <b id="hU">—</b> | ⛔ <b id="hS">—</b></div>
+  <div id="vixBox">VIX <span id="vixVal">—</span> &nbsp; <span id="regLbl">—</span></div>
+  <button class="btn btn-blue" id="btnRefresh">🔄 Aggiorna</button>
+  <button class="btn btn-grey" id="btnExcel">📥 Excel</button>
+  <a href="https://giorgiogoldoni.github.io/fixed/" style="padding:5px 13px;border-radius:6px;font-size:11px;border:1px solid #d0d7de;background:#eef0f3;color:#57606a;text-decoration:none">← Suite</a>
 </div>
 
-<!-- TS BAR -->
 <div id="tsBar">⏳ Caricamento...</div>
 
-<!-- TIPO TABS -->
 <div id="tipoBar">
-  <span class="flbl">SEZIONE:</span>
-  <button class="tipo-btn tipo-ALL act"         data-tipo="ALL"         onclick="setTipo('ALL',this)">📋 Tutti</button>
-  <button class="tipo-btn tipo-ULTRA"           data-tipo="ULTRA"       onclick="setTipo('ULTRA',this)">💼 Ultra</button>
-  <button class="tipo-btn tipo-SETTORIALI"      data-tipo="SETTORIALI"  onclick="setTipo('SETTORIALI',this)">🏭 Settoriali</button>
-  <button class="tipo-btn tipo-TEMATICI"        data-tipo="TEMATICI"    onclick="setTipo('TEMATICI',this)">🚀 Tematici</button>
-  <button class="tipo-btn tipo-COMMODITIES"     data-tipo="COMMODITIES" onclick="setTipo('COMMODITIES',this)">🌾 Commodities</button>
+  <span class="lbl">SEZIONE:</span>
+  <button class="tb act" data-tipo="ALL">📋 Tutti</button>
+  <button class="tb" data-tipo="ULTRA">💼 Ultra</button>
+  <button class="tb" data-tipo="SETTORIALI">🏭 Settoriali</button>
+  <button class="tb" data-tipo="TEMATICI">🚀 Tematici</button>
+  <button class="tb" data-tipo="COMMODITIES">🌾 Commodities</button>
 </div>
 
-<!-- SIGNAL FILTER -->
-<div class="fbar">
-  <span class="flbl">SEGNALE:</span>
-  <button class="fbtn sact-ALL" data-s="ALL"        onclick="setSig('ALL',this)">📋 Tutti</button>
-  <button class="fbtn"          data-s="LONG_CONF"  onclick="setSig('LONG_CONF',this)">🟢 Long Conf</button>
-  <button class="fbtn"          data-s="LONG_EARLY" onclick="setSig('LONG_EARLY',this)">🔵 Long Early</button>
-  <button class="fbtn"          data-s="GRIGIA"     onclick="setSig('GRIGIA',this)">🟡 Grigia</button>
-  <button class="fbtn"          data-s="USCITA"     onclick="setSig('USCITA',this)">🔴 Uscita</button>
-  <button class="fbtn"          data-s="STOP"       onclick="setSig('STOP',this)">⛔ Stop</button>
+<div id="sigBar">
+  <span class="lbl">SEGNALE:</span>
+  <button class="sb act" data-zona="ALL">📋 Tutti</button>
+  <button class="sb" data-zona="LONG_CONF">🟢 Long Conf</button>
+  <button class="sb" data-zona="LONG_EARLY">🔵 Long Early</button>
+  <button class="sb" data-zona="GRIGIA">🟡 Grigia</button>
+  <button class="sb" data-zona="USCITA">🔴 Uscita</button>
+  <button class="sb" data-zona="STOP">⛔ Stop</button>
 </div>
 
-<!-- TABLE -->
 <div id="tblWrap">
-  <table id="tbl" style="display:none">
-    <thead>
-      <tr>
-        <th onclick="sortBy('ticker')">Ticker</th>
-        <th onclick="sortBy('nome')">Nome ETF</th>
-        <th onclick="sortBy('tipo')">Tipo</th>
-        <th onclick="sortBy('provider')">Provider</th>
-        <th onclick="sortBy('zona')">Zona</th>
-        <th onclick="sortBy('score')">Score ↓</th>
-        <th onclick="sortBy('prezzo')">Prezzo</th>
-        <th>KAMA F/S</th>
-        <th onclick="sortBy('sar')">SAR</th>
-        <th onclick="sortBy('er')">ER</th>
-        <th onclick="sortBy('baff')">Baff</th>
-        <th onclick="sortBy('ao')">AO</th>
-        <th onclick="sortBy('volRatio')">VOL</th>
-        <th onclick="sortBy('rsi')">RSI</th>
-        <th onclick="sortBy('perfSett')">Sett%</th>
-        <th onclick="sortBy('perfMese')">Mese%</th>
-        <th onclick="sortBy('entryDate')">🕐 Segnale</th>
-        <th>📈</th>
-      </tr>
-    </thead>
+  <table id="mainTbl" style="display:none">
+    <thead><tr>
+      <th data-col="ticker">Ticker</th>
+      <th data-col="nome">Nome</th>
+      <th data-col="tipo">Tipo</th>
+      <th data-col="provider">Provider</th>
+      <th data-col="zona">Zona</th>
+      <th data-col="score">Score ↓</th>
+      <th data-col="prezzo">Prezzo</th>
+      <th>KAMA F/S</th>
+      <th data-col="sar">SAR</th>
+      <th data-col="ao">AO</th>
+      <th data-col="volRatio">VOL</th>
+      <th data-col="rsi">RSI</th>
+      <th data-col="perfSett">Sett%</th>
+      <th data-col="perfMese">Mese%</th>
+      <th data-col="entryDate">🕐 Segnale</th>
+      <th>📈</th>
+    </tr></thead>
     <tbody id="tbody"></tbody>
   </table>
-  <div id="empty">🦅 Caricamento in corso...</div>
+  <div id="empty">🦅 Caricamento...</div>
 </div>
 
 <script>
-const JSON_URL='https://raw.githubusercontent.com/Giorgiogoldoni/raptor-two/main/raptor_two.json';
-let allData=[],filteredData=[];
-let activeSig='ALL',activeTipo='ALL';
-let sortField='score',sortDir=-1;
+var allData = [];
+var activeTipo = 'ALL';
+var activeZona = 'ALL';
+var sortCol = 'score';
+var sortDir = -1;
 
-async function loadJSON(){
-  const tb=document.getElementById('tsBar');
-  tb.textContent='⏳ Caricamento...';tb.className='';
-  try{
-    const r=await fetch(JSON_URL+'?t='+Date.now());
-    if(!r.ok)throw new Error('HTTP '+r.status);
-    const obj=await r.json();
-    if(!obj.data?.length)throw new Error('JSON vuoto');
-    allData=obj.data;
-    setVix(obj.vix,obj.vstoxx,obj.regime,obj.regime_color);
-    const dt=new Date(obj.timestamp);
-    const ageH=(Date.now()-dt.getTime())/3600000;
-    const ageStr=ageH<1?Math.round(ageH*60)+' min fa':Math.round(ageH)+'h fa';
-    tb.className=ageH<=2?'fresh':'stale';
-    tb.innerHTML=(ageH<=2?'🟢':'🟡')+' Aggiornato: <b>'+obj.timestamp_it+'</b> ('+ageStr+') &nbsp;·&nbsp; '+obj.ok+'/'+obj.total+' ticker &nbsp;·&nbsp; Regime: <b>'+(obj.regime||'—')+'</b>';
-    document.getElementById('hTot').textContent=obj.total;
-    updateCounters();renderTable();
-  }catch(e){
-    tb.className='stale';
-    tb.textContent='⚠️ '+e.message+' — Lanciare Actions → RAPTOR Two Fetch → Run workflow';
-  }
+var JSON_URL = 'https://raw.githubusercontent.com/Giorgiogoldoni/raptor-two/main/raptor_two.json';
+
+function loadJSON() {
+  document.getElementById('tsBar').textContent = '⏳ Caricamento...';
+  document.getElementById('tsBar').style.background = '#fff8c5';
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', JSON_URL + '?t=' + Date.now(), true);
+  xhr.onload = function() {
+    if (xhr.status !== 200) {
+      document.getElementById('tsBar').textContent = '⚠️ Errore HTTP ' + xhr.status;
+      return;
+    }
+    try {
+      var obj = JSON.parse(xhr.responseText);
+      allData = obj.data || [];
+      document.getElementById('hTot').textContent = allData.length;
+      document.getElementById('hLC').textContent = allData.filter(function(r){return r.zona==='LONG_CONF';}).length;
+      document.getElementById('hLE').textContent = allData.filter(function(r){return r.zona==='LONG_EARLY';}).length;
+      document.getElementById('hU').textContent  = allData.filter(function(r){return r.zona==='USCITA';}).length;
+      document.getElementById('hS').textContent  = allData.filter(function(r){return r.zona==='STOP';}).length;
+      document.getElementById('vixVal').textContent = (obj.vix || '—') + ' / ' + (obj.vstoxx || '—');
+      document.getElementById('regLbl').textContent = obj.regime || '—';
+      var tb = document.getElementById('tsBar');
+      tb.textContent = '✅ ' + (obj.timestamp_it || '—') + ' · ' + (obj.ok || 0) + '/' + (obj.total || 0) + ' ticker · Regime: ' + (obj.regime || '—');
+      tb.style.background = '#dafbe1';
+      tb.style.color = '#1a7f37';
+      renderTable();
+    } catch(e) {
+      document.getElementById('tsBar').textContent = '⚠️ Errore parsing JSON: ' + e.message;
+    }
+  };
+  xhr.onerror = function() {
+    document.getElementById('tsBar').textContent = '⚠️ Errore di rete — controllare connessione';
+  };
+  xhr.send();
 }
 
-function setVix(vix,vstoxx,regime,color){
-  document.getElementById('vixVal').textContent=(vix||'—')+' / '+(vstoxx||'—');
-  document.getElementById('regimeLbl').textContent=regime||'—';
-  const m={verde:'calma',giallo:'normale',arancio:'attenzione',rosso:'stress',rosso_scuro:'paura'};
-  document.getElementById('vixBadge').className=m[color]||'normale';
-}
-
-function updateCounters(){
-  document.getElementById('hLC').textContent=allData.filter(r=>r.zona==='LONG_CONF').length;
-  document.getElementById('hLE').textContent=allData.filter(r=>r.zona==='LONG_EARLY').length;
-  document.getElementById('hU').textContent =allData.filter(r=>r.zona==='USCITA').length;
-  document.getElementById('hS').textContent =allData.filter(r=>r.zona==='STOP').length;
-}
-
-function setTipo(t,btn){
-  activeTipo=t;
-  document.querySelectorAll('.tipo-btn').forEach(b=>b.classList.remove('act'));
-  btn.classList.add('act');
-  renderTable();
-}
-function setSig(s,btn){
-  activeSig=s;
-  document.querySelectorAll('.fbtn[data-s]').forEach(b=>{b.className='fbtn';});
-  btn.className='fbtn sact-'+s;
-  renderTable();
-}
-function applyFilters(){
-  let d=[...allData];
-  if(activeTipo!=='ALL')d=d.filter(r=>r.tipo===activeTipo);
-  if(activeSig!=='ALL')d=d.filter(r=>r.zona===activeSig);
-  return d;
-}
-function sortBy(f){
-  if(sortField===f)sortDir*=-1;
-  else{sortField=f;sortDir=-1;}
-  document.querySelectorAll('th').forEach(th=>{
-    th.classList.remove('asc','desc');
-    if(th.getAttribute('onclick')==="sortBy('"+f+"')")
-      th.classList.add(sortDir===1?'asc':'desc');
+function renderTable() {
+  var data = allData.filter(function(r) {
+    if (activeTipo !== 'ALL' && r.tipo !== activeTipo) return false;
+    if (activeZona !== 'ALL' && r.zona !== activeZona) return false;
+    return true;
   });
-  renderTable();
-}
 
-const ZH={
-  'LONG_CONF': '<span class="zona z-LC">🟢 LONG CONF</span>',
-  'LONG_EARLY':'<span class="zona z-LE">🔵 LONG EARLY</span>',
-  'GRIGIA':    '<span class="zona z-G">🟡 GRIGIA</span>',
-  'USCITA':    '<span class="zona z-U">🔴 USCITA</span>',
-  'STOP':      '<span class="zona z-S">⛔ STOP</span>',
-  'ND':        '<span class="zona z-N">— ND</span>'
-};
-function f3(v){return v!=null?Number(v).toFixed(3):'—'}
-function fp(v){return v!=null?(v>=0?'+':'')+Number(v).toFixed(2)+'%':'—'}
-
-function renderTable(){
-  let data=applyFilters();
-  data.sort((a,b)=>{
-    let va=a[sortField],vb=b[sortField];
-    if(va==null&&vb==null)return 0;if(va==null)return 1;if(vb==null)return -1;
-    return typeof va==='string'?sortDir*va.localeCompare(vb):sortDir*(va-vb);
+  data.sort(function(a, b) {
+    var av = a[sortCol], bv = b[sortCol];
+    if (av == null) av = sortDir > 0 ? 9999 : -9999;
+    if (bv == null) bv = sortDir > 0 ? 9999 : -9999;
+    if (typeof av === 'string') return sortDir * av.localeCompare(bv);
+    return sortDir * (av - bv);
   });
-  filteredData=data;
-  if(!data.length){
-    document.getElementById('tbl').style.display='none';
-    document.getElementById('empty').style.display='block';
-    document.getElementById('empty').textContent='Nessun risultato';
+
+  if (!data.length) {
+    document.getElementById('mainTbl').style.display = 'none';
+    document.getElementById('empty').style.display = 'block';
+    document.getElementById('empty').textContent = 'Nessun risultato';
     return;
   }
-  const TIPO_ICONS={'ULTRA':'💼','SETTORIALI':'🏭','TEMATICI':'🚀','COMMODITIES':'🌾'};
-  const rows=data.map(r=>{
-    const z=r.zona||'ND';
-    const vc=(r.volRatio||0)>=1.5?'vh':(r.volRatio||0)<0.7?'vl':'';
-    const ac=(r.ao||0)>=0?'pos':'neg';
-    const nm=(r.nome||'').length>40?(r.nome||'').slice(0,40)+'…':(r.nome||'—');
-    const ps=fp(r.perfSett),pm=fp(r.perfMese);
-    const pc=(r.perfSett||0)>=0?'pos':'neg',mc=(r.perfMese||0)>=0?'pos':'neg';
-    const sarTxt=r.sar!=null?'<span style="color:'+(r.sarBull?'#16a34a':'#dc2626')+';font-weight:700;font-size:10px">'+(r.sarBull?'▲':'▼')+' '+r.sar.toFixed(3)+'</span>':'—';
-    const tipoIcon=TIPO_ICONS[r.tipo]||'';
-    return '<tr>'+
-      '<td><b>'+r.ticker+'</b></td>'+
-      '<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis" title="'+(r.nome||'')+'">'+nm+'</td>'+
-      '<td><span class="tb-'+r.tipo+'">'+tipoIcon+' '+r.tipo+'</span></td>'+
-      '<td style="font-size:10px;color:var(--text2)">'+(r.provider||'')+'</td>'+
-      '<td>'+(ZH[z]||ZH['ND'])+'</td>'+
-      '<td><b>'+(r.score||0)+'</b></td>'+
-      '<td>'+f3(r.prezzo)+'</td>'+
-      '<td><div class="kd"><span class="kf">F: '+f3(r.kama_fast)+'</span><span class="ks">S: '+f3(r.kama_slow)+'</span></div></td>'+
-      '<td>'+sarTxt+'</td>'+
-      '<td>'+(r.er!=null?(r.er*100).toFixed(0)+'%':'—')+'</td>'+
-      '<td>'+(r.baff||0)+'</td>'+
-      '<td class="'+ac+'">'+(r.ao||0)>=0?'▲':'▼'+' '+Math.abs(r.ao||0).toFixed(3)+'</td>'+
-      '<td class="'+vc+'">'+(r.volRatio!=null?r.volRatio.toFixed(1)+'x':'—')+'</td>'+
-      '<td>'+(r.rsi!=null?r.rsi.toFixed(1):'—')+'</td>'+
-      '<td class="'+pc+'">'+ps+'</td>'+
-      '<td class="'+mc+'">'+pm+'</td>'+
-      '<td style="font-size:10px;color:var(--text2)">'+(r.entryDate||'—')+'</td>'+
-      '<td><button class="btn-chart" onclick="openChart(''+encodeURIComponent(r.yahoo||r.ticker)+'')">📈</button></td>'+
-      '</tr>';
-  }).join('');
-  document.getElementById('tbody').innerHTML=rows;
-  document.getElementById('tbl').style.display='';
-  document.getElementById('empty').style.display='none';
+
+  var ZONA_HTML = {
+    'LONG_CONF':  '<span class="z z-LC">🟢 LONG CONF</span>',
+    'LONG_EARLY': '<span class="z z-LE">🔵 LONG EARLY</span>',
+    'GRIGIA':     '<span class="z z-G">🟡 GRIGIA</span>',
+    'USCITA':     '<span class="z z-U">🔴 USCITA</span>',
+    'STOP':       '<span class="z z-S">⛔ STOP</span>'
+  };
+
+  var TIPO_CLR = {
+    'ULTRA':       '#1d4ed8',
+    'SETTORIALI':  '#16a34a',
+    'TEMATICI':    '#7c3aed',
+    'COMMODITIES': '#c2410c'
+  };
+
+  var html = '';
+  for (var i = 0; i < data.length; i++) {
+    var r = data[i];
+    var zona = r.zona || 'ND';
+    var zonaH = ZONA_HTML[zona] || '<span class="z z-N">' + zona + '</span>';
+    var tipoClr = TIPO_CLR[r.tipo] || '#57606a';
+    var tipoH = '<span style="background:rgba(0,0,0,.06);color:' + tipoClr + ';font-size:9px;padding:1px 6px;border-radius:4px;font-weight:700">' + (r.tipo || '') + '</span>';
+    var kfH = r.kama_fast ? '<span style="color:#dc2626;font-size:10px">F:' + r.kama_fast.toFixed(3) + '</span><br><span style="color:#7c3aed;font-size:10px">S:' + (r.kama_slow ? r.kama_slow.toFixed(3) : '—') + '</span>' : '—';
+    var sarH = r.sar != null ? '<span style="color:' + (r.sarBull ? '#1a7f37' : '#cf222e') + ';font-weight:700;font-size:10px">' + (r.sarBull ? '▲' : '▼') + ' ' + r.sar.toFixed(3) + '</span>' : '—';
+    var aoH = r.ao != null ? '<span class="' + (r.ao >= 0 ? 'pos' : 'neg') + '">' + (r.ao >= 0 ? '▲' : '▼') + ' ' + Math.abs(r.ao).toFixed(3) + '</span>' : '—';
+    var volH = r.volRatio != null ? '<span style="font-weight:700;color:' + (r.volRatio >= 1.5 ? '#1a7f37' : '#57606a') + '">' + r.volRatio.toFixed(1) + 'x</span>' : '—';
+    var rsiH = r.rsi != null ? '<span style="color:' + (r.rsi >= 70 ? '#cf222e' : r.rsi <= 30 ? '#1a7f37' : '#57606a') + '">' + r.rsi.toFixed(1) + '</span>' : '—';
+    var p5H  = r.perfSett  != null ? '<span class="' + (r.perfSett  >= 0 ? 'pos' : 'neg') + '">' + (r.perfSett  >= 0 ? '+' : '') + r.perfSett  + '%</span>' : '—';
+    var p20H = r.perfMese  != null ? '<span class="' + (r.perfMese  >= 0 ? 'pos' : 'neg') + '">' + (r.perfMese  >= 0 ? '+' : '') + r.perfMese  + '%</span>' : '—';
+    var nome = (r.nome || '').slice(0, 45);
+    html += '<tr>';
+    html += '<td><b>' + (r.ticker || '') + '</b></td>';
+    html += '<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis" title="' + (r.nome || '') + '">' + nome + '</td>';
+    html += '<td>' + tipoH + '</td>';
+    html += '<td style="font-size:10px;color:#57606a">' + (r.provider || '') + '</td>';
+    html += '<td>' + zonaH + '</td>';
+    html += '<td><b>' + (r.score || 0) + '</b></td>';
+    html += '<td style="font-family:monospace">' + (r.prezzo != null ? r.prezzo.toFixed(3) : '—') + '</td>';
+    html += '<td>' + kfH + '</td>';
+    html += '<td>' + sarH + '</td>';
+    html += '<td>' + aoH + '</td>';
+    html += '<td>' + volH + '</td>';
+    html += '<td>' + rsiH + '</td>';
+    html += '<td>' + p5H + '</td>';
+    html += '<td>' + p20H + '</td>';
+    html += '<td style="font-size:10px;color:#57606a">' + (r.entryDate || '—') + '</td>';
+    html += '<td><button class="chart-btn" onclick="openChart(\'' + encodeURIComponent(r.yahoo || r.ticker) + '\')">📈</button></td>';
+    html += '</tr>';
+  }
+
+  document.getElementById('tbody').innerHTML = html;
+  document.getElementById('mainTbl').style.display = '';
+  document.getElementById('empty').style.display = 'none';
 }
 
-function openChart(sym){
-  window.open('RAPTOR_Chart_Two.html?ticker='+sym,'_blank');
+function openChart(sym) {
+  window.open('RAPTOR_Chart_Two.html?ticker=' + sym, '_blank');
 }
 
-function exportExcel(){
-  const data=filteredData.length?filteredData:allData;
-  if(!data.length){alert('Nessun dato');return;}
-  const rows=data.map(r=>({
-    Ticker:r.ticker,Nome:r.nome||'',Tipo:r.tipo||'',Provider:r.provider||'',
-    Zona:r.zona||'',Score:r.score||0,Prezzo:r.prezzo||0,
-    KAMA_Fast:r.kama_fast||0,KAMA_Slow:r.kama_slow||0,SAR:r.sar||0,
-    ER:r.er||0,Baffetti:r.baff||0,AO:r.ao||0,VolRatio:r.volRatio||0,
-    RSI:r.rsi||0,Sett_pct:r.perfSett||0,Mese_pct:r.perfMese||0,
-    Segnale_date:r.entryDate||''
-  }));
-  const ws=XLSX.utils.json_to_sheet(rows);
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,'RAPTOR Two');
-  XLSX.writeFile(wb,'raptor_two_'+new Date().toISOString().slice(0,10)+'.xlsx');
+function exportExcel() {
+  if (!allData.length) { alert('Nessun dato'); return; }
+  var rows = allData.map(function(r) {
+    return {Ticker:r.ticker,Tipo:r.tipo,Nome:r.nome,Provider:r.provider,Zona:r.zona,
+      Score:r.score,Prezzo:r.prezzo,'KAMA F':r.kama_fast,'KAMA S':r.kama_slow,
+      SAR:r.sar,AO:r.ao,RSI:r.rsi,VOL:r.volRatio,'Sett%':r.perfSett,'Mese%':r.perfMese};
+  });
+  var ws = XLSX.utils.json_to_sheet(rows);
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'RAPTOR Two');
+  XLSX.writeFile(wb, 'raptor_two_' + new Date().toISOString().slice(0,10) + '.xlsx');
 }
 
-document.addEventListener('DOMContentLoaded',loadJSON);
+// Event listeners
+document.getElementById('btnRefresh').addEventListener('click', loadJSON);
+document.getElementById('btnExcel').addEventListener('click', exportExcel);
+
+document.querySelectorAll('.tb').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    activeTipo = this.getAttribute('data-tipo');
+    document.querySelectorAll('.tb').forEach(function(b){ b.classList.remove('act'); });
+    this.classList.add('act');
+    renderTable();
+  });
+});
+
+document.querySelectorAll('.sb').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    activeZona = this.getAttribute('data-zona');
+    document.querySelectorAll('.sb').forEach(function(b){ b.classList.remove('act'); });
+    this.classList.add('act');
+    renderTable();
+  });
+});
+
+document.querySelectorAll('th[data-col]').forEach(function(th) {
+  th.addEventListener('click', function() {
+    var col = this.getAttribute('data-col');
+    if (sortCol === col) sortDir *= -1;
+    else { sortCol = col; sortDir = -1; }
+    renderTable();
+  });
+});
+
+// Avvio
+loadJSON();
 </script>
 </body>
-</html>    
+</html>
